@@ -1,0 +1,43 @@
+services:
+
+  consul-server:
+    image: hashicorp/consul:1.21
+    container_name: consul-server
+    command: "agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0"
+    environment:
+      - CONSUL_LOCAL_CONFIG={"datacenter":"dc1", "log_level":"INFO", "server":true}
+    ports:
+      - "8500:8500" # UI
+      - "8600:8600/tcp" # DNS TCP
+      - "8600:8600/udp" # DNS UDP
+      - "8300:8300" # Server RPC
+      - "8301:8301" # Serf LAN
+      - "8302:8302" # Serf WAN
+    volumes:
+      - /consul/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8500/v1/status/leader" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  consul-config-loader:
+    image: curlimages/curl:8.16.0
+    container_name: consul-config-loader
+    volumes:
+      - ./.docker:/docker
+    command: [ "/bin/sh", "/docker/consul/upload-to-consul.sh" ]
+    depends_on:
+      consul-server:
+        condition: service_healthy
+
+  consul-client:
+    image: hashicorp/consul:1.15
+    container_name: consul-client
+    command: "agent -node=client-1 -join=consul-server -client=0.0.0.0"
+    depends_on:
+      - consul-server
+    environment:
+      - CONSUL_LOCAL_CONFIG={"datacenter":"dc1", "log_level":"INFO"}
+    ports:
+      - "8501:8500"

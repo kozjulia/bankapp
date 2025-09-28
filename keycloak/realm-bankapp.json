@@ -685,21 +685,21 @@
           }
         }
       ],
-      "name": "gateway",
+      "name": "front-client",
       "description": "",
-      "rootUrl": "http://localhost:8081",
-      "adminUrl": "http://localhost:8081",
-      "baseUrl": "http://localhost:8081",
+      "rootUrl": "http://localhost:8000",
+      "adminUrl": "http://localhost:8000",
+      "baseUrl": "http://localhost:8000",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "8lHWta5ggYFsrJN5eUEKn3j8YmZqLbSl",
       "redirectUris": [
-        "http://localhost:8081"
+        "http://localhost:8000"
       ],
       "webOrigins": [
-        "http://localhost:8081"
+        "http://localhost:8000"
       ],
       "notBefore": 0,
       "bearerOnly": false,

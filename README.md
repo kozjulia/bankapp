@@ -4,13 +4,14 @@ _______
 
 Банк **умеет** делать следующее:
 
-1. 
+1.
 
 -------
 
-Приложение написано на **Java 21**, использует **Spring Boot 3**, **Gradle**, **Thymeleaf**, **WebMVC**, **Flyway**, 
+Приложение написано на **Java 21**, использует **Spring Boot 3**, **Gradle**, **Thymeleaf**, **WebMVC**, **Flyway**,
 **Openapi Generator**, **Spring Security**,
-**JUnit 5**, **Mockito**, **Testcontainers**, **Docker**, API соответствует **REST**, данные хранятся в БД **PostgreSQL**, 
+**JUnit 5**, **Mockito**, **Testcontainers**, **Docker**, API соответствует **REST**, данные хранятся в БД **PostgreSQL
+**,
 кэш в **Redis**, тесты выполняются в **PostgreSQL**.  
 Тестовое покрытие кода - % строк кода.
 
@@ -32,6 +33,6 @@ docker-compose up
 В директории build/libs проекта появится jar-архив сервиса
 
 3. Запустить приложения можно по адресу:  
-   [](http://localhost:80)
+   [адрес front](http://localhost:8000)
    [](http://localhost:80)
 4. Успех!  
