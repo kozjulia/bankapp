@@ -8,10 +8,10 @@ _______
 
 -------
 
-Приложение написано на **Java 21**, использует **Spring Boot 3**, **Gradle**, **Thymeleaf**, **WebMVC**, **Flyway**, *
-*Openapi Generator**, **Spring Security**,
-**JUnit 5**, **Mockito**, **Testcontainers**, **Docker**, API соответствует **REST**, данные хранятся в БД *
-*PostgreSQL**, кэш в **Redis**, тесты выполняются в **PostgreSQL**.  
+Приложение написано на **Java 21**, использует **Spring Boot 3**, **Gradle**, **Thymeleaf**, **WebMVC**, **Flyway**, 
+**Openapi Generator**, **Spring Security**,
+**JUnit 5**, **Mockito**, **Testcontainers**, **Docker**, API соответствует **REST**, данные хранятся в БД **PostgreSQL**, 
+кэш в **Redis**, тесты выполняются в **PostgreSQL**.  
 Тестовое покрытие кода - % строк кода.
 
 -------
