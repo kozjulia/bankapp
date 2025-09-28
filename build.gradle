@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '3.5.0'
+}
+
+bootJar {
+    enabled false
+}
+
+jar {
+    enabled false
+}
+
+allprojects {
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = 'UTF-8'
+
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+}
+
+wrapper {
+    gradleVersion = '8.14'
+}
