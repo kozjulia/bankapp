@@ -1,0 +1,12 @@
+{
+  "id": "c2038998-c84c-48f5-87c4-3f6a7cd54aaa",
+  "name": "transfer.write",
+  "description": "",
+  "protocol": "openid-connect",
+  "attributes": {
+    "include.in.token.scope": "true",
+    "display.on.consent.screen": "true",
+    "gui.order": "",
+    "consent.screen.text": ""
+  }
+}

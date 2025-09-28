@@ -1,0 +1,12 @@
+{
+  "id": "00895683-03ad-4e69-a8d3-20acd9b0a8c0",
+  "name": "blocker.read",
+  "description": "",
+  "protocol": "openid-connect",
+  "attributes": {
+    "include.in.token.scope": "true",
+    "display.on.consent.screen": "true",
+    "gui.order": "",
+    "consent.screen.text": ""
+  }
+}

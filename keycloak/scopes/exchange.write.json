@@ -1,0 +1,12 @@
+{
+  "id": "39155302-f505-4a83-aad4-6a53e6da4b59",
+  "name": "exchange.write",
+  "description": "",
+  "protocol": "openid-connect",
+  "attributes": {
+    "include.in.token.scope": "true",
+    "display.on.consent.screen": "true",
+    "gui.order": "",
+    "consent.screen.text": ""
+  }
+}
