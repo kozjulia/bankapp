@@ -17,8 +17,8 @@ public class TestSecurityConfiguration {
     @Primary
     public ReactiveClientRegistrationRepository clientRegistrationRepository() {
         ClientRegistration registration = ClientRegistration
-                .withRegistrationId("front-client")
-                .clientId("front-client")
+                .withRegistrationId("bankapp-client-id")
+                .clientId("bankapp-client-id")
                 .clientSecret("test-secret")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")

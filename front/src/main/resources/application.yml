@@ -34,12 +34,12 @@ spring:
             provider: keycloak
             authorizationGrantType: client_credentials
             client-id: ${CLIENT_ID:front-client}
-            client-secret: ${CLIENT_SECRET:8lHWta5ggYFsrJN5eUEKn3j8YmZqLbSl}
+            client-secret: ${CLIENT_SECRET:LLtTlDhsJJ2lfN5c0oHtcb0zdLQyvkXQ}
             scope: exchange.read,accounts.read,accounts.write,cash.write,transfer.write
             clientAuthenticationMethod: client_secret_post
         provider:
           keycloak:
-            issuer-uri: ${OAUTH2_SERVER:http://localhost:8080/realms/master}
+            issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/bankapp}
 
 client:
   accounts:
