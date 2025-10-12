@@ -1,0 +1,67 @@
+{
+  "clientId": "transfer-client",
+  "name": "",
+  "description": "",
+  "rootUrl": "",
+  "adminUrl": "",
+  "baseUrl": "",
+  "surrogateAuthRequired": false,
+  "enabled": true,
+  "alwaysDisplayInConsole": false,
+  "clientAuthenticatorType": "client-secret",
+  "secret": "Sbv2HTFhjQhdlt49JVLukoXH1Dlf05sv",
+  "redirectUris": [
+    "/*"
+  ],
+  "webOrigins": [
+    "/*"
+  ],
+  "notBefore": 0,
+  "bearerOnly": false,
+  "consentRequired": false,
+  "standardFlowEnabled": true,
+  "implicitFlowEnabled": false,
+  "directAccessGrantsEnabled": true,
+  "serviceAccountsEnabled": true,
+  "publicClient": false,
+  "frontchannelLogout": true,
+  "protocol": "openid-connect",
+  "attributes": {
+    "realm_client": "false",
+    "oidc.ciba.grant.enabled": "false",
+    "client.secret.creation.time": "1749059222",
+    "backchannel.logout.session.required": "true",
+    "standard.token.exchange.enabled": "false",
+    "oauth2.device.authorization.grant.enabled": "false",
+    "backchannel.logout.revoke.offline.tokens": "false"
+  },
+  "authenticationFlowBindingOverrides": {},
+  "fullScopeAllowed": true,
+  "nodeReRegistrationTimeout": -1,
+  "defaultClientScopes": [
+    "service_account",
+    "web-origins",
+    "acr",
+    "notification.write",
+    "roles",
+    "exchange.read",
+    "accounts.write",
+    "accounts.read",
+    "basic",
+    "blocker.read"
+  ],
+  "optionalClientScopes": [
+    "address",
+    "phone",
+    "profile",
+    "organization",
+    "offline_access",
+    "microprofile-jwt",
+    "email"
+  ],
+  "access": {
+    "view": true,
+    "configure": true,
+    "manage": true
+  }
+}

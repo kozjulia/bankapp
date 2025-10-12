@@ -52,14 +52,14 @@ spring:
         registration:
           accounts-client:
             provider: keycloak
-            authorizationGrantType: client_credentials
+            authorization-grant-type: client_credentials
             client-id: ${CLIENT_ID:accounts-client}
             client-secret: ${CLIENT_SECRET:PAsZ470oShhYzY9qlVy35yty0tcWZhp7}
             scope: exchange.read,accounts.read,accounts.write,cash.write,transfer.write
-            clientAuthenticationMethod: client_secret_post
+            client-authentication-method: client_secret_basic
         provider:
           keycloak:
-            issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/bankapp}
+            issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/master}
 
 client:
   notifications:

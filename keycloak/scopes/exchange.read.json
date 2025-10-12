@@ -1,0 +1,12 @@
+{
+  "id": "4babdca3-7515-4e7a-92b8-3cea4e52e4e2",
+  "name": "exchange.read",
+  "description": "",
+  "protocol": "openid-connect",
+  "attributes": {
+    "include.in.token.scope": "true",
+    "display.on.consent.screen": "true",
+    "gui.order": "",
+    "consent.screen.text": ""
+  }
+}

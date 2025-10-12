@@ -1,0 +1,12 @@
+{
+  "id": "62cd475c-2de4-48d3-b2bb-74871fade72a",
+  "name": "accounts.write",
+  "description": "",
+  "protocol": "openid-connect",
+  "attributes": {
+    "include.in.token.scope": "true",
+    "display.on.consent.screen": "true",
+    "gui.order": "",
+    "consent.screen.text": ""
+  }
+}

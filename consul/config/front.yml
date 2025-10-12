@@ -1,0 +1,4 @@
+client.accounts.url=http://api-gateway/accounts
+client.cash.url=http://api-gateway/cash
+client.exchange.url=http://api-gateway/exchange
+client.transfer.url=http://api-gateway/transfer

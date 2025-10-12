@@ -1,7 +1,7 @@
 services:
 
   consul-server:
-    image: hashicorp/consul:1.21
+    image: hashicorp/consul:1.15
     container_name: consul-server
     command: "agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0"
     environment:
@@ -13,8 +13,6 @@ services:
       - "8300:8300" # Server RPC
       - "8301:8301" # Serf LAN
       - "8302:8302" # Serf WAN
-    volumes:
-      - /consul/data
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8500/v1/status/leader" ]
       interval: 10s
@@ -25,8 +23,8 @@ services:
     image: curlimages/curl:8.16.0
     container_name: consul-config-loader
     volumes:
-      - ./.docker:/docker
-    command: [ "/bin/sh", "/docker/consul/upload-to-consul.sh" ]
+      - ./consul:/consul
+    command: [ "/bin/sh", "/consul/upload-to-consul.sh" ]
     depends_on:
       consul-server:
         condition: service_healthy
@@ -41,3 +39,105 @@ services:
       - CONSUL_LOCAL_CONFIG={"datacenter":"dc1", "log_level":"INFO"}
     ports:
       - "8501:8500"
+
+  keycloak-secret-loader:
+    build:
+      context: ./keycloak
+      dockerfile: Dockerfile
+    container_name: keycloak-secret-loader
+    environment:
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - CONSUL_URL=http://consul-server:8500
+    volumes:
+      - ./keycloak:/keycloak
+    command: >
+      sh -c "
+      echo 'Ожидание готовности Keycloak...' &&
+      while ! curl -s http://keycloak:8080; do sleep 5; done &&
+      echo 'Keycloak готов - начинаем получение секретов' &&
+      chmod +x /app/scripts/get-secrets.sh &&
+      sh /app/scripts/get-secrets.sh"
+    depends_on:
+      - keycloak
+      - keycloak-config-loader
+      - consul-server
+
+  keycloak-config-loader:
+    build:
+      context: ./keycloak
+      dockerfile: Dockerfile
+    container_name: keycloak-config-loader
+    volumes:
+      - ./keycloak:/keycloak
+    environment:
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KEYCLOAK_REALM=master
+    entrypoint: [ ]
+    command: >
+      /bin/sh -c "
+      echo 'Ожидание готовности Keycloak...' &&
+      while ! curl -s http://keycloak:8080; do
+        sleep 5;
+      done &&
+      echo 'Keycloak готов - начинаем конфигурацию' &&
+      echo 'Загрузка скоупов...' &&
+      sh /app/scripts/upload-scopes-to-keycloak.sh &&
+      echo 'Загрузка клиентов...' &&
+      sh /app/scripts/upload-clients-to-keycloak.sh"
+    depends_on:
+      - keycloak
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      - KC_HOSTNAME=keycloak
+    ports:
+      - "8080:8080"
+    command:
+      - start-dev
+
+  front:
+    container_name: front
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    environment:
+      - KEYCLOAK_ISSUE_URL=http://keycloak:8080/realms/master
+      - CONSUL_HOST=consul-client
+    ports:
+      - "8000:8000"
+    depends_on:
+      - keycloak-secret-loader
+
+  accounts-db:
+    image: postgres:latest
+    container_name: accounts_db_container
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: sa
+      POSTGRES_DB: accounts_db
+    ports:
+      - "5430:5432"
+
+  accounts:
+    container_name: accounts
+    build:
+      context: ./accounts
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_R2DBC_URL=r2dbc:postgresql://accounts-db:5432/accounts_db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://accounts-db:5432/accounts_db
+      - KEYCLOAK_ISSUE_URL=http://keycloak:8080/realms/master
+      - CONSUL_HOST=consul-client
+    ports:
+      - "8001:8001"
+    depends_on:
+      - accounts-db
+      - keycloak-secret-loader

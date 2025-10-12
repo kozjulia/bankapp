@@ -77,16 +77,6 @@ public class AccountsController {
                         exception -> handleEditPasswordError(exception, userDetails, model));
     }
 
-    private Mono<String> handleEditPasswordError(WebClientResponseException ex, CustomUserDetails userDetails, Model model) {
-        return Mono.fromCallable(() -> {
-                    ErrorResponse error = objectMapper.readValue(ex.getResponseBodyAsString(), ErrorResponse.class);
-                    model.addAttribute("passwordErrors", List.of(error.error()));
-                    return null;
-                })
-                .onErrorResume(IOException.class, e -> Mono.error(ex))
-                .then(getAccountsInfo(userDetails, model));
-    }
-
     @PostMapping(value = "/user/{login}/editUserAccounts")
     public Mono<String> editUserAccounts(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -100,6 +90,16 @@ public class AccountsController {
                 .map(user -> "redirect:/main")
                 .onErrorResume(WebClientResponseException.class,
                         ex -> handleEditAccountsError(ex, userDetails, model));
+    }
+
+    private Mono<String> handleEditPasswordError(WebClientResponseException ex, CustomUserDetails userDetails, Model model) {
+        return Mono.fromCallable(() -> {
+                    ErrorResponse error = objectMapper.readValue(ex.getResponseBodyAsString(), ErrorResponse.class);
+                    model.addAttribute("passwordErrors", List.of(error.error()));
+                    return null;
+                })
+                .onErrorResume(IOException.class, e -> Mono.error(ex))
+                .then(getAccountsInfo(userDetails, model));
     }
 
     private UserDto updateUserFromRequest(UserDto account, UserUpdateRequest request, String login) {
