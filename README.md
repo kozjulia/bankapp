@@ -8,8 +8,8 @@ _______
 
 -------
 
-Приложение написано на **Java 21**, использует **Spring Boot 3**, **Gradle**, **Thymeleaf**, **WebMVC**, **Flyway**,
-**Openapi Generator**, **Spring Security**,
+Приложение написано на **Java 21**, использует **Spring Boot 3**, **Gradle**, **Thymeleaf**, **WebFlux**, **Flyway**,
+**Spring Security**,
 **JUnit 5**, **Mockito**, **Testcontainers**, **Docker**, API соответствует **REST**, данные хранятся в БД **PostgreSQL
 **,
 кэш в **Redis**, тесты выполняются в **PostgreSQL**.  
@@ -35,4 +35,5 @@ docker-compose up
 3. Запустить приложения можно по адресу:  
    [адрес front](http://localhost:8000)
    [адрес accounts](http://localhost:8001)
+   [адрес gateway](http://localhost:8010)
 4. Успех!  

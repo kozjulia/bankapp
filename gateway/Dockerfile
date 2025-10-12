@@ -2,8 +2,8 @@ FROM openjdk:21-jdk
 
 WORKDIR /app
 
-COPY ./build/libs/front-*.jar app.jar
+COPY ./build/libs/gateway-*.jar app.jar
 
-EXPOSE 8000
+EXPOSE 8010
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

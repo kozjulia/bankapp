@@ -116,6 +116,19 @@ services:
     depends_on:
       - keycloak-secret-loader
 
+  gateway-service:
+    container_name: gateway
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    environment:
+      - KEYCLOAK_ISSUE_URL=http://keycloak:8080/realms/master
+      - CONSUL_HOST=consul-client
+    ports:
+      - "8010:8010"
+    depends_on:
+      - keycloak-secret-loader
+
   accounts-db:
     image: postgres:latest
     container_name: accounts_db_container
