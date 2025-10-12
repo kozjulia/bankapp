@@ -1,4 +1,4 @@
-package java.ru.yandex.practicum;
+package ru.yandex.practicum.cash;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

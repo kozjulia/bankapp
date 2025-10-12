@@ -167,3 +167,16 @@ services:
       - "8002:8002"
     depends_on:
       - keycloak-secret-loader
+
+  cash:
+    container_name: cash
+    build:
+      context: ./cash
+      dockerfile: Dockerfile
+    environment:
+      - KEYCLOAK_ISSUE_URL=http://keycloak:8080/realms/master
+      - CONSUL_HOST=consul-client
+    ports:
+      - "8003:8003"
+    depends_on:
+      - keycloak-secret-loader

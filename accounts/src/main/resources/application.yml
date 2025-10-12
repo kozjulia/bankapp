@@ -56,7 +56,7 @@ spring:
             client-id: ${CLIENT_ID:accounts-client}
             client-secret: ${CLIENT_SECRET:PAsZ470oShhYzY9qlVy35yty0tcWZhp7}
             scope: exchange.read,accounts.read,accounts.write,cash.write,transfer.write
-            client-authentication-method: client_secret_basic
+            client-authentication-method: client_secret_post
         provider:
           keycloak:
             issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/master}

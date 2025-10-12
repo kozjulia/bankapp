@@ -1,0 +1,4 @@
+account.service.url=http://api-gateway/accounts-service
+exchange.service.url=http://api-gateway/exchange-service
+blocker.service.url=http://api-gateway/blocker-service
+notification.service.url=http://api-gateway/notification-service

@@ -36,5 +36,6 @@ docker-compose up
    [адрес front](http://localhost:8000)
    [адрес accounts](http://localhost:8001)
    [адрес blocker](http://localhost:8002)
+   [адрес cash](http://localhost:8003)
    [адрес gateway](http://localhost:8010)
 4. Успех!  

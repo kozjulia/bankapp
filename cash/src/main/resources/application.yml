@@ -1,17 +1,9 @@
 server:
-  port: 8000
+  port: 8003
 
 spring:
   application:
-    name: front
-
-  main:
-    allow-bean-definition-overriding: true
-
-  thymeleaf:
-    check-template-location: true
-    cache: false
-
+    name: cash
   config:
     import: optional:consul://${CONSUL_HOST:localhost}:8500
   cloud:
@@ -28,15 +20,18 @@ spring:
 
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/master}
       client:
         registration:
-          front-client:
+          cash-client:
             provider: keycloak
             authorization-grant-type: client_credentials
-            client-id: ${CLIENT_ID:front-client}
-            client-secret: ${CLIENT_SECRET:LLtTlDhsJJ2lfN5c0oHtcb0zdLQyvkXQ}
-            scope: exchange.read,accounts.read,accounts.write,cash.write,transfer.write
-            client-authentication-method: client_secret_basic
+            client-id: ${CLIENT_ID:cash-client}
+            client-secret: ${CLIENT_SECRET:7NH6aciGchDEY7zy4KkJ5jlnGFXVWJmb}
+            scope: accounts.read,accounts.write,blocker.read,notification.write
+            client-authentication-method: client_secret_post
         provider:
           keycloak:
             issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/master}
@@ -44,9 +39,7 @@ spring:
 client:
   accounts:
     url: ${ACCOUNTS_SERVICE_URL:http://accounts:8001}
-  cash:
-    url: ${CASH_SERVICE_URL:http://cash:8003}
-  exchange:
-    url: ${EXCHANGE_SERVICE_URL:http://exchange:8080}
-  transfer:
-    url: ${TRANSFER_SERVICE_URL:http://transfer:8080}
+  blocker:
+    url: ${BLOCKER_SERVICE_URL:http://accounts:8002}
+  notifications:
+    url: ${NOTIFICATIONS_SERVICE_URL:http://notifications:8080}
