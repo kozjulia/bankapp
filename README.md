@@ -35,5 +35,6 @@ docker-compose up
 3. Запустить приложения можно по адресу:  
    [адрес front](http://localhost:8000)
    [адрес accounts](http://localhost:8001)
+   [адрес blocker](http://localhost:8002)
    [адрес gateway](http://localhost:8010)
 4. Успех!  

@@ -154,3 +154,16 @@ services:
     depends_on:
       - accounts-db
       - keycloak-secret-loader
+
+  blocker:
+    container_name: blocker
+    build:
+      context: ./blocker
+      dockerfile: Dockerfile
+    environment:
+      - KEYCLOAK_ISSUE_URL=http://keycloak:8080/realms/master
+      - CONSUL_HOST=consul-client
+    ports:
+      - "8002:8002"
+    depends_on:
+      - keycloak-secret-loader
