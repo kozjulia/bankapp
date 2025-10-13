@@ -180,3 +180,16 @@ services:
       - "8003:8003"
     depends_on:
       - keycloak-secret-loader
+
+  exchange-generator:
+    container_name: exchange-generator
+    build:
+      context: ./exchange-generator
+      dockerfile: Dockerfile
+    environment:
+      - KEYCLOAK_ISSUE_URL=http://keycloak:8080/realms/master
+      - CONSUL_HOST=consul-client
+    ports:
+      - "8005:8005"
+    depends_on:
+      - keycloak-secret-loader

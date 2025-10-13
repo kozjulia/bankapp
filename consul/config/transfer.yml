@@ -1,4 +1,4 @@
-account.service.url=http://api-gateway/accounts-service
-exchange.service.url=http://api-gateway/exchange-service
-blocker.service.url=http://api-gateway/blocker-service
-notification.service.url=http://api-gateway/notification-service
+client.accounts.url=http://api-gateway/accounts
+client.blocker.url=http://api-gateway/blocker
+client.exchange.url=http://api-gateway/exchange
+client.notification.url=http://api-gateway/notification
