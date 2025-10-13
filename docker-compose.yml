@@ -181,6 +181,19 @@ services:
     depends_on:
       - keycloak-secret-loader
 
+  exchange:
+    container_name: exchange
+    build:
+      context: ./exchange
+      dockerfile: Dockerfile
+    environment:
+      - KEYCLOAK_ISSUE_URL=http://keycloak:8080/realms/master
+      - CONSUL_HOST=consul-client
+    ports:
+      - "8004:8004"
+    depends_on:
+      - keycloak-secret-loader
+
   exchange-generator:
     container_name: exchange-generator
     build:

@@ -26,7 +26,7 @@ public class CurrencyGeneratorService {
         this.currencyCodes = List.of("USD", "CNY", "RUB");
     }
 
-    @Scheduled(cron = "*/5 * * * *")
+    @Scheduled(cron = "* */5 * * * *")
     public void generateAndUpdateCurrencyRates() {
         currencyCodes.forEach(code -> {
             BigDecimal randomValue = BigDecimal.valueOf(1.0)
