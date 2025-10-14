@@ -2,7 +2,7 @@ FROM openjdk:21-jdk
 
 WORKDIR /app
 
-COPY ./build/libs/exchange-service-*.jar app.jar
+COPY ./build/libs/exchange-*.jar app.jar
 
 EXPOSE 8004
 

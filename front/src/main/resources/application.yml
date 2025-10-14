@@ -49,4 +49,4 @@ client:
   exchange:
     url: ${EXCHANGE_SERVICE_URL:http://exchange:8004}
   transfer:
-    url: ${TRANSFER_SERVICE_URL:http://transfer:8080}
+    url: ${TRANSFER_SERVICE_URL:http://transfer:8007}

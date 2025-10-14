@@ -19,9 +19,6 @@ _______
 
 Для запуска приложения:
 
-1. Создайте БД с параметрами, как в файле: application.yaml.
-2. Перейдите в папку с приложением и запустите (предварительно запустив Docker)
-
 ```gradle
 gradle clean build
 ```
@@ -40,5 +37,6 @@ docker-compose up
    [адрес exchange](http://localhost:8004)
    [адрес exchange-generator](http://localhost:8005)
    [адрес notifications](http://localhost:8006)
+   [адрес transfer](http://localhost:8007)
    [адрес gateway](http://localhost:8010)
 4. Успех!  

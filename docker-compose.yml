@@ -219,3 +219,16 @@ services:
       - "8006:8006"
     depends_on:
       - keycloak-secret-loader
+
+  transfer:
+    container_name: transfer
+    build:
+      context: ./transfer
+      dockerfile: Dockerfile
+    environment:
+      - KEYCLOAK_ISSUE_URL=http://keycloak:8080/realms/master
+      - CONSUL_HOST=consul-client
+    ports:
+      - "8007:8007"
+    depends_on:
+      - keycloak-secret-loader
