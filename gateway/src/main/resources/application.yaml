@@ -23,16 +23,16 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: exchange-service-route
-          uri: lb://exchange-service
+        - id: exchange-route
+          uri: lb://exchange
           predicates:
-            - Path=/exchange-service/**
+            - Path=/exchange/**
           filters:
-            - RewritePath=/exchange-service/?(?<segment>.*), /$\{segment}
+            - RewritePath=/exchange/?(?<segment>.*), /$\{segment}
             - name: CircuitBreaker
               args:
                 name: exchangeServiceCircuitBreaker
-                fallbackUri: forward:/exchange-service-fallback
+                fallbackUri: forward:/exchange-fallback
             - name: Retry
               args:
                 retries: 3

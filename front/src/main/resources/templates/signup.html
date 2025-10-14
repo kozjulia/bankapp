@@ -2,15 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8">
     <title>Регистрация</title>
 </head>
 
 <body>
-<a href="/login" style="float:right;">
-    <b>Залогиниться &#10549;</b>
-</a>
-<h1>Регистрация</h1>
 <form th:action="${'/signup'}" method="post">
     <table style="width:30%;margin-left:auto;margin-right:auto;border-radius:2%;padding:10px;background-color:whitesmoke;">
         <tr>
@@ -24,31 +20,31 @@
         <tr>
             <td style="font-weight:bold;">Логин</td>
             <td>
-                <input name="login" type="text" th:value="${login}" style="width:100%" required="true"/>
+                <input name="login" type="text" th:value="${login}" style="width:100%" required/>
             </td>
         </tr>
         <tr>
             <td style="font-weight:bold;">Пароль</td>
             <td>
-                <input name="password" type="password" style="width:100%" required="true"/>
+                <input name="password" type="password" style="width:100%" required/>
             </td>
         </tr>
         <tr>
             <td style="font-weight:bold;">Повторите пароль</td>
             <td>
-                <input name="confirm_password" type="password" style="width:100%" required="true"/>
+                <input name="confirmPassword" type="password" style="width:100%" required/>
             </td>
         </tr>
         <tr>
             <td style="font-weight:bold;">Фамилия Имя</td>
             <td>
-                <input name="name" type="text" th:value="${name}" style="width:100%" required="true"/>
+                <input name="name" type="text" th:value="${name}" style="width:100%" required/>
             </td>
         </tr>
         <tr>
             <td style="font-weight:bold;">Дата рождения</td>
             <td>
-                <input name="birthdate" type="date" th:value="${birthdate}" style="width:100%" required="true"/>
+                <input name="birthdate" type="date" th:value="${birthdate}" style="width:100%" required/>
             </td>
         </tr>
         <tr>
