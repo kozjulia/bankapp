@@ -1,0 +1,25 @@
+server:
+  port: 8006
+
+spring:
+  application:
+    name: notifications
+  config:
+    import: optional:consul://${CONSUL_HOST:localhost}:8500
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: 8500
+      config:
+        enabled: true
+        prefixes: config,secrets
+        format: PROPERTIES
+        default-context: application
+        watch:
+          enabled: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/master}

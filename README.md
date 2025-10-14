@@ -39,5 +39,6 @@ docker-compose up
    [адрес cash](http://localhost:8003)
    [адрес exchange](http://localhost:8004)
    [адрес exchange-generator](http://localhost:8005)
+   [адрес notifications](http://localhost:8006)
    [адрес gateway](http://localhost:8010)
 4. Успех!  

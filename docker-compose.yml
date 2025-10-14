@@ -206,3 +206,16 @@ services:
       - "8005:8005"
     depends_on:
       - keycloak-secret-loader
+
+  notifications:
+    container_name: notifications
+    build:
+      context: ./notifications
+      dockerfile: Dockerfile
+    environment:
+      - KEYCLOAK_ISSUE_URL=http://keycloak:8080/realms/master
+      - CONSUL_HOST=consul-client
+    ports:
+      - "8006:8006"
+    depends_on:
+      - keycloak-secret-loader

@@ -42,4 +42,4 @@ client:
   blocker:
     url: ${BLOCKER_SERVICE_URL:http://accounts:8002}
   notifications:
-    url: ${NOTIFICATIONS_SERVICE_URL:http://notifications:8080}
+    url: ${NOTIFICATIONS_SERVICE_URL:http://notifications:8006}
