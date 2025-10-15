@@ -45,3 +45,7 @@ client:
     url: ${EXCHANGE_SERVICE_URL:http://exchange:8004}
   notifications:
     url: ${NOTIFICATIONS_SERVICE_URL:http://notifications:8006}
+
+logging:
+  level:
+    org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping: TRACE

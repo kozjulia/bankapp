@@ -64,3 +64,9 @@ spring:
 client:
   notifications:
     url: ${NOTIFICATIONS_SERVICE_URL:http://notifications:8006}
+
+logging:
+  level:
+    org.springframework:
+      r2dbc: DEBUG
+      web.reactive.result.method.annotation.RequestMappingHandlerMapping: TRACE

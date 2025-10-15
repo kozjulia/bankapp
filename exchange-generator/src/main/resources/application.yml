@@ -36,3 +36,7 @@ spring:
 client:
   exchange:
     url: ${EXCHANGE_SERVICE_URL:http://exchange:8004}
+
+logging:
+  level:
+    org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping: TRACE

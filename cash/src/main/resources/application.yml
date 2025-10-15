@@ -43,3 +43,7 @@ client:
     url: ${BLOCKER_SERVICE_URL:http://accounts:8002}
   notifications:
     url: ${NOTIFICATIONS_SERVICE_URL:http://notifications:8006}
+
+logging:
+  level:
+    org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping: TRACE
