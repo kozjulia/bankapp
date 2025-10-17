@@ -4,37 +4,22 @@ _______
 
 Банк **умеет** делать следующее:
 
-1. Регистрироваться в системе по логину и паролю (заводить аккаунт);
-2. Добавлять счета в различных валютах;
-3. Класть виртуальные деньги на счёт и снимать их;
-4. Переводить деньги между своими счетами с учётом конвертации в различные валюты;
-5. Переводить деньги на другой счёт с учётом конвертации в различные валюты.
+1. 
 
 -------
 
-Приложение состоит из следующих микросервисов:
-
-- Front (фронт);
-- Accounts (аккаунты со счетами);
-- Cash (обналичивание денег);
-- Transfer (перевод между счетами одного или двух аккаунтов);
-- Exchange (конвертация валют);
-- Exchange Generator (генератор курсов валют);
-- Blocker (блокировщик подозрительных операций);
-- Notifications (уведомления).
-
--------
-
-Приложение написано на **Java 21**, использует **Spring Boot 3**, **Gradle**, **Thymeleaf**, **WebFlux**, **Flyway**,
-**Spring Security**,
-**JUnit 5**, **Mockito**, **Testcontainers**, **Docker**, API соответствует **REST**, данные хранятся в БД **PostgreSQL
-**,
-кэш в **Redis**, тесты выполняются в **PostgreSQL**.  
-Тестовое покрытие кода - 24% строк кода.
+Приложение написано на **Java 21**, использует **Spring Boot 3**, **Gradle**, **Thymeleaf**, **WebMVC**, **Flyway**, *
+*Openapi Generator**, **Spring Security**,
+**JUnit 5**, **Mockito**, **Testcontainers**, **Docker**, API соответствует **REST**, данные хранятся в БД *
+*PostgreSQL**, кэш в **Redis**, тесты выполняются в **PostgreSQL**.  
+Тестовое покрытие кода - % строк кода.
 
 -------
 
 Для запуска приложения:
+
+1. Создайте БД с параметрами, как в файле: application.yaml.
+2. Перейдите в папку с приложением и запустите (предварительно запустив Docker)
 
 ```gradle
 gradle clean build
@@ -47,13 +32,6 @@ docker-compose up
 В директории build/libs проекта появится jar-архив сервиса
 
 3. Запустить приложения можно по адресу:  
-   [адрес front](http://localhost:8000)
-   [адрес accounts](http://localhost:8001)
-   [адрес blocker](http://localhost:8002)
-   [адрес cash](http://localhost:8003)
-   [адрес exchange](http://localhost:8004)
-   [адрес exchange-generator](http://localhost:8005)
-   [адрес notifications](http://localhost:8006)
-   [адрес transfer](http://localhost:8007)
-   [адрес gateway](http://localhost:8010)
+   [](http://localhost:80)
+   [](http://localhost:80)
 4. Успех!  

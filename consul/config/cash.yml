@@ -1,3 +1,0 @@
-client.accounts.url=http://api-gateway/accounts
-client.blocker.url=http://api-gateway/blocker
-client.notifications.url=http://api-gateway/notifications
