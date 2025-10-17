@@ -44,34 +44,26 @@ public class CashService {
                                     }
                                     return processAccountOperation(login, validRequest);
                                 }))
-                .flatMap(result -> {
-                    sendSuccessNotification(login, "Операция прошла успешно");
-                    return Mono.just(result);
-                })
+                .flatMap(result -> sendSuccessNotification(login, "Операция прошла успешно"))
                 .onErrorResume(error -> {
                     String errorMessage = error instanceof ResponseStatusException
                             ? ((ResponseStatusException) error).getReason()
                             : "Операция была отменена: " + error.getMessage();
-                    sendErrorNotification(login, errorMessage);
-                    return Mono.error(error);
+                    return sendErrorNotification(login, errorMessage);
                 })
                 .then();
     }
 
-    private void sendSuccessNotification(String login, String message) {
-        notificationsClient.sendNotification(new NotificationRequest(login, message))
-                .subscribe(
-                        null,
-                        e -> log.error("Ошибка при отправке успешного уведомления", e)
-                );
+    private Mono<Void> sendSuccessNotification(String login, String message) {
+        return notificationsClient.sendNotification(new NotificationRequest(login, message))
+                .doOnError(e -> log.error("Ошибка при отправке успешного уведомления", e))
+                .then();
     }
 
-    private void sendErrorNotification(String login, String message) {
-        notificationsClient.sendNotification(new NotificationRequest(login, message))
-                .subscribe(
-                        null,
-                        e -> log.error("Ошибка при отправке неуспешного уведомления", e)
-                );
+    private Mono<Void> sendErrorNotification(String login, String message) {
+        return notificationsClient.sendNotification(new NotificationRequest(login, message))
+                .doOnError(e -> log.error("Ошибка при отправке неуспешного уведомления", e))
+                .onErrorComplete();
     }
 
     private Mono<CashChangeRequest> validateRequest(CashChangeRequest request) {

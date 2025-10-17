@@ -69,14 +69,17 @@ public class TransferService {
                         .doOnSuccess(__ -> sendSuccessNotification(request)));
     }
 
-    private void sendTransferNotification(String login, String message) {
-        notificationsClient.sendNotification(new NotificationRequest(login, message))
-                .subscribe(null, e -> log.error("Failed to send notification", e));
+    private Mono<Void> sendSuccessNotification(TransferRequest request) {
+        return sendTransferNotification(
+                request.getLogin(),
+                "Перевод успешно выполнен на сумму " + request.getValue()
+        );
     }
 
-    private void sendSuccessNotification(TransferRequest request) {
-        sendTransferNotification(request.getLogin(),
-                "Перевод успешно выполнен на сумму " + request.getValue());
+    private Mono<Void> sendTransferNotification(String login, String message) {
+        return notificationsClient.sendNotification(new NotificationRequest(login, message))
+                .doOnError(e -> log.error("Ошибка при отправке увндомления", e))
+                .onErrorComplete();
     }
 
     private AccountDto findAccountByCurrency(UserDto user, String currencyName, String errorMessage) {

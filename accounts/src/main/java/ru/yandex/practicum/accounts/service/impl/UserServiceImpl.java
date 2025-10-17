@@ -23,6 +23,7 @@ import ru.yandex.practicum.accounts.model.UserEntity;
 import ru.yandex.practicum.accounts.repository.UserRepository;
 import ru.yandex.practicum.accounts.service.UserService;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -104,7 +105,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByLogin(login)
                 .hasElement()
                 .flatMap(exists -> exists
-                        ? Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Пользователь с логином %s уже существует" .formatted(login)))
+                        ? Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Пользователь с логином %s уже существует".formatted(login)))
                         : Mono.empty());
     }
 
@@ -132,6 +133,8 @@ public class UserServiceImpl implements UserService {
                 .map(currency -> AccountEntity.builder()
                         .currency(currency.name())
                         .userId(userId)
+                        .value(BigDecimal.ZERO)
+                        .exists(true)
                         .build())
                 .toList();
 
