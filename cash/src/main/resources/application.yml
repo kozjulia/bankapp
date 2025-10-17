@@ -1,0 +1,49 @@
+server:
+  port: 8003
+
+spring:
+  application:
+    name: cash
+  config:
+    import: optional:consul://${CONSUL_HOST:localhost}:8500
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: 8500
+      config:
+        enabled: true
+        prefixes: config,secrets
+        format: PROPERTIES
+        default-context: application
+        watch:
+          enabled: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/master}
+      client:
+        registration:
+          cash-client:
+            provider: keycloak
+            authorization-grant-type: client_credentials
+            client-id: ${CLIENT_ID:cash-client}
+            client-secret: ${CLIENT_SECRET:7NH6aciGchDEY7zy4KkJ5jlnGFXVWJmb}
+            scope: accounts.read,accounts.write,blocker.read,notification.write
+            client-authentication-method: client_secret_post
+        provider:
+          keycloak:
+            issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/master}
+
+client:
+  accounts:
+    url: ${ACCOUNTS_SERVICE_URL:http://accounts:8001}
+  blocker:
+    url: ${BLOCKER_SERVICE_URL:http://accounts:8002}
+  notifications:
+    url: ${NOTIFICATIONS_SERVICE_URL:http://notifications:8006}
+
+logging:
+  level:
+    org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping: TRACE
