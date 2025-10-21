@@ -1,0 +1,37 @@
+apiVersion: v2
+name: bankapp
+description: Umbrella helm chart for Bankapp microservices
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+dependencies:
+  - name: postgresql
+    version: "14.2.3"
+    repository: "https://charts.bitnami.com/bitnami"
+    alias: accounts-db
+    condition: accounts-db.enabled
+  - name: accounts
+    version: 0.1.0
+    repository: "file://./charts/accounts"
+  - name: blocker
+    version: 0.1.0
+    repository: "file://./charts/blocker"
+  - name: cash
+    version: 0.1.0
+    repository: "file://./charts/cash"
+  - name: exchange-generator
+    version: 0.1.0
+    repository: "file://./charts/exchange-generator"
+  - name: exchange
+    version: 0.1.0
+    repository: "file://./charts/exchange"
+  - name: front
+    version: 0.1.0
+    repository: "file://./charts/front"
+  - name: notifications
+    version: 0.1.0
+    repository: "file://./charts/notifications"
+  - name: transfer
+    version: 0.1.0
+    repository: "file://./charts/transfer"

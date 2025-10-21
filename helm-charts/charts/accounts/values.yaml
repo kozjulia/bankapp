@@ -1,0 +1,43 @@
+replicaCount: 1
+
+image:
+  repository: bankapp-accounts
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8001
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: { }
+  name: ""
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: { }
+  hosts:
+    - host: accounts.test.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: [ ]
+
+environment:
+  SPRING_DATASOURCE_R2DBC_URL: "r2dbc:postgresql://{{ .Release.Name }}-accounts-db:5432/accounts_db"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://{{ .Release.Name }}-accounts-db:5432/accounts_db"
+  SPRING_DATASOURCE_USER: sa
+  KEYCLOAK_ISSUE_URL: http://keycloak:8080/realms/master
+  NOTIFICATIONS_SERVICE_URL: http://{{ .Release.Name }}-notifications:8006
+  CLIENT_SECRET: PAsZ470oShhYzY9qlVy35yty0tcWZhp7
+
+resources: { }
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80

@@ -1,0 +1,38 @@
+replicaCount: 1
+
+image:
+  repository: bankapp-notifications
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8006
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: { }
+  name: ""
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: notifications.test.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+environment:
+  KEYCLOAK_ISSUE_URL: http://keycloak:8080/realms/master
+
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80

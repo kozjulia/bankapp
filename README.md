@@ -55,5 +55,4 @@ docker-compose up
    [адрес exchange-generator](http://localhost:8005)
    [адрес notifications](http://localhost:8006)
    [адрес transfer](http://localhost:8007)
-   [адрес gateway](http://localhost:8010)
 4. Успех!  

@@ -1,0 +1,18 @@
+# .deployment/values.yaml
+global:
+  keycloak:
+    url: http://keycloak:8080
+    realm: master
+
+accounts-db:
+  enabled: true
+  auth:
+    database: accounts_db
+    username: sa
+    # Use existingSecret or provide password (less secure for production)
+    # existingSecret: "{{ .Release.Name }}-customer-db-postgresql" # Name of the secret to use/create
+    password: "sa" # Example: Not recommended for production
+  primary:
+    persistence:
+      enabled: true
+      size: 1Gi # Small size for example

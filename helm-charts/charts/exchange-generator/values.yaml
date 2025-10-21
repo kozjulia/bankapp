@@ -1,0 +1,39 @@
+replicaCount: 1
+
+image:
+  repository: bankapp-exchange-generator
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8005
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: { }
+  name: ""
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: exchange-generator.test.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+environment:
+  KEYCLOAK_ISSUE_URL: http://keycloak:8080/realms/master
+  EXCHANGE_SERVICE_URL: http://{{ .Release.Name }}-exchange:8004
+
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
