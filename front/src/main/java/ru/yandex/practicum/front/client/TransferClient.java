@@ -1,7 +1,6 @@
 package ru.yandex.practicum.front.client;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -17,7 +16,7 @@ import ru.yandex.practicum.front.client.dto.TransferRequest;
 public class TransferClient {
 
     private final ReactiveOAuth2AuthorizedClientManager manager;
-    private final @LoadBalanced WebClient.Builder transferWebClient;
+    private final WebClient.Builder transferWebClient;
 
     public Mono<Void> transfer(String login, TransferRequest request) {
         request.setLogin(login);

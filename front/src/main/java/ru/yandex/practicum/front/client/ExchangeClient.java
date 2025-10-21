@@ -1,7 +1,6 @@
 package ru.yandex.practicum.front.client;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -18,7 +17,7 @@ import ru.yandex.practicum.front.dto.CurrencyDto;
 public class ExchangeClient {
 
     private final ReactiveOAuth2AuthorizedClientManager manager;
-    private final @LoadBalanced WebClient.Builder exchangeWebClient;
+    private final WebClient.Builder exchangeWebClient;
 
     public Flux<CurrencyDto> getCurrencyRates() {
         return retrieveToken()

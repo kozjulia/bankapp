@@ -4,14 +4,6 @@ server:
 spring:
   application:
     name: exchange
-  cloud:
-    consul:
-      host: ${CONSUL_HOST:localhost}
-      port: 8500
-      config:
-        enabled: false
-        prefixes: config
-        defaultContext: application
 
   security:
     oauth2:

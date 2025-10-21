@@ -23,8 +23,6 @@ jar {
 group = 'ru.yandex.practicum.accounts'
 version = '1.0.0-SNAPSHOT'
 
-ext["springCloudVersion"] = "2025.0.0"
-
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -54,8 +52,6 @@ dependencies {
     implementation 'org.flywaydb:flyway-database-postgresql'
     runtimeOnly 'org.postgresql:postgresql' // JDBC драйвер для Flyway
 
-    implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
-
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
@@ -70,12 +66,6 @@ dependencies {
     testImplementation 'org.testcontainers:r2dbc'
     testImplementation 'io.projectreactor:reactor-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-    }
 }
 
 tasks.named('test') {

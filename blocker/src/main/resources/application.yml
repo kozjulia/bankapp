@@ -4,12 +4,6 @@ server:
 spring:
   application:
     name: blocker
-  cloud:
-    consul:
-      host: ${CONSUL_HOST:localhost}
-      port: 8500
-      config:
-        enabled: false
 
   security:
     oauth2:

@@ -1,7 +1,6 @@
 package ru.yandex.practicum.transfer.client;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,7 +12,7 @@ import ru.yandex.practicum.transfer.client.dto.NotificationRequest;
 public class NotificationsClient {
 
     private final AuthorizedClient authorizedClient;
-    private final @LoadBalanced WebClient.Builder notificationsWebClient;
+    private final WebClient.Builder notificationsWebClient;
 
     public Mono<Void> sendNotification(NotificationRequest request) {
         return authorizedClient

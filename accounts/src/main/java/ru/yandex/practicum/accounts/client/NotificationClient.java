@@ -1,7 +1,6 @@
 package ru.yandex.practicum.accounts.client;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -17,7 +16,7 @@ import ru.yandex.practicum.accounts.client.dto.NotificationRequest;
 public class NotificationClient {
 
     private final ReactiveOAuth2AuthorizedClientManager manager;
-    private final @LoadBalanced WebClient.Builder notificationsWebClient;
+    private final WebClient.Builder notificationsWebClient;
 
     public Mono<Void> sendNotification(NotificationRequest request) {
         return retrieveToken()
