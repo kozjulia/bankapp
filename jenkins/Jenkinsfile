@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build & Unit Tests') {
+            steps {
+               sh 'gradle clean test'
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                sh """
+                docker build -t bankapp-accounts:latest accounts
+                docker build -t bankapp-blocker:latest blocker
+                docker build -t bankapp-cash:latest cash
+                docker build -t bankapp-exchange-generator:latest exchange-generator
+                docker build -t bankapp-exchange:latest exchange
+                docker build -t bankapp-front:latest front
+                docker build -t bankapp-notifications:latest notifications
+                docker build -t bankapp-transfer:latest transfer
+                """
+            }
+        }
+
+        stage('Test Helm Chart') {
+                    steps {
+                        sh """
+                        helm lint .deployment
+                        helm install --dry-run bankapp .deployment
+                        """
+             }
+        }
+
+        stage('Helm Deploy to TEST') {
+            steps {
+                sh """
+                helm dependency update .deployment
+                helm upgrade --install bankapp .deployment --namespace test --kube-insecure-skip-tls-verify --create-namespace
+                """
+            }
+        }
+    }
+}
