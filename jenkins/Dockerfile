@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Установка Gradle
-ENV GRADLE_VERSION="8.14.0"
-RUN curl -L https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -o gradle.zip && \
+ENV GRADLE_VERSION="8.13"
+RUN curl -L "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" -o gradle.zip && \
     unzip gradle.zip -d /opt/gradle && \
     rm gradle.zip
 ENV PATH="/opt/gradle/gradle-${GRADLE_VERSION}/bin:${PATH}"
