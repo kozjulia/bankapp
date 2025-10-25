@@ -1,0 +1,42 @@
+replicaCount: 1
+
+image:
+  repository: bankapp-front
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: { }
+  name: ""
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: front.test.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+environment:
+  KEYCLOAK_ISSUE_URL: http://keycloak:8080/realms/master
+  ACCOUNTS_SERVICE_URL: http://{{ .Release.Name }}-accounts:8001
+  CASH_SERVICE_URL: http://{{ .Release.Name }}-cash:8003
+  EXCHANGE_SERVICE_URL: http://{{ .Release.Name }}-exchange:8004
+  TRANSFER_SERVICE_URL: http://{{ .Release.Name }}-transfer:8007
+
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80

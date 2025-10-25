@@ -1,0 +1,83 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_REGISTRY = credentials('DOCKER_REGISTRY')
+        GITHUB_USERNAME = credentials('GITHUB_USERNAME')
+        KUBECONFIG = '/root/.kube/config'
+    }
+
+    stages {
+        stage('Build & Unit Tests') {
+            steps {
+               sh 'gradle clean test'
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                sh """
+                docker build -t ${DOCKER_REGISTRY}/bankapp-accounts:latest accounts
+                docker build -t ${DOCKER_REGISTRY}/bankapp-blocker:latest blocker
+                docker build -t ${DOCKER_REGISTRY}/bankapp-cash:latest cash
+                docker build -t ${DOCKER_REGISTRY}/bankapp-exchange-generator:latest exchange-generator
+                docker build -t ${DOCKER_REGISTRY}/bankapp-exchange:latest exchange
+                docker build -t ${DOCKER_REGISTRY}/bankapp-front:latest front
+                docker build -t ${DOCKER_REGISTRY}/bankapp-notifications:latest notifications
+                docker build -t ${DOCKER_REGISTRY}/bankapp-transfer:latest transfer
+                """
+            }
+        }
+
+        stage('Push Docker Images') {
+            steps {
+                withCredentials([string(credentialsId: 'GHCR_TOKEN', variable: 'GHCR_TOKEN')]) {
+                    sh """
+                    echo \$GHCR_TOKEN | docker login ghcr.io -u ${GITHUB_USERNAME} --password-stdin
+                    docker push ${DOCKER_REGISTRY}/bankapp-accounts-service:latest
+                    docker push ${DOCKER_REGISTRY}/bankapp-blocker-service:latest
+                    docker push ${DOCKER_REGISTRY}/bankapp-cash-service:latest
+                    docker push ${DOCKER_REGISTRY}/bankapp-exchange-generator-service:latest
+                    docker push ${DOCKER_REGISTRY}/bankapp-exchange-service:latest
+                    docker push ${DOCKER_REGISTRY}/bankapp-front-ui:latest
+                    docker push ${DOCKER_REGISTRY}/bankapp-notification-service:latest
+                    docker push ${DOCKER_REGISTRY}/bankapp-transfer-service:latest
+                    """
+                }
+            }
+        }
+
+        stage('Test Helm Chart') {
+                    steps {
+                        sh """
+                        helm lint .deployment
+                        helm install --dry-run bankapp .deployment
+                        """
+             }
+        }
+
+        stage('Helm Deploy to TEST') {
+            steps {
+                sh """
+                helm dependency update .deployment
+                helm upgrade --install bankapp .deployment --namespace test --kube-insecure-skip-tls-verify --create-namespace
+                """
+            }
+        }
+
+        stage('Manual Approval for PROD') {
+            steps {
+                input message: 'Deploy to PROD environment?', ok: 'Yes, deploy'
+            }
+        }
+
+        stage('Helm Deploy to PROD') {
+            steps {
+                sh """
+                helm dependency update .deployment
+                helm upgrade --install bankapp .deployment --namespace prod --kube-insecure-skip-tls-verify --create-namespace
+                """
+            }
+        }
+    }
+}

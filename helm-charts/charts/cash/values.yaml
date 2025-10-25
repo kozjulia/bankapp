@@ -1,0 +1,41 @@
+replicaCount: 1
+
+image:
+  repository: bankapp-cash
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8003
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: { }
+  name: ""
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: cash.test.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+environment:
+  KEYCLOAK_ISSUE_URL: http://keycloak:8080/realms/master
+  ACCOUNTS_SERVICE_URL: http://{{ .Release.Name }}-accounts:8001
+  BLOCKER_SERVICE_URL: http://{{ .Release.Name }}-blocker:8002
+  NOTIFICATIONS_SERVICE_URL: http://{{ .Release.Name }}-notifications:8006
+
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80

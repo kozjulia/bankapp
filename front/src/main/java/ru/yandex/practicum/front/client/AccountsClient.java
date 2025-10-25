@@ -1,7 +1,6 @@
 package ru.yandex.practicum.front.client;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -20,7 +19,7 @@ import ru.yandex.practicum.front.client.dto.UserDto;
 public class AccountsClient {
 
     private final ReactiveOAuth2AuthorizedClientManager manager;
-    private final @LoadBalanced WebClient.Builder accountsWebClient;
+    private final WebClient.Builder accountsWebClient;
 
     public Mono<UserDto> createUser(CreateUserRequest request) {
         return retrieveToken()
