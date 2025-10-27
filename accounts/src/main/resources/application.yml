@@ -47,9 +47,16 @@ spring:
           keycloak:
             issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/master}
 
-client:
-  notifications:
-    url: ${NOTIFICATIONS_SERVICE_URL:http://notifications:8006}
+  kafka:
+    bootstrap-servers: ${KAFKA_URL:localhost:29092}
+    admin:
+      client-id: accounts
+      fail-fast: true
+    producer:
+      acks: all
+      retries: 3
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 logging:
   level:

@@ -10,8 +10,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
-import ru.yandex.practicum.accounts.client.NotificationClient;
-import ru.yandex.practicum.accounts.client.dto.NotificationRequest;
+import ru.yandex.practicum.accounts.mq.NotificationSender;
+import ru.yandex.practicum.accounts.mq.dto.NotificationRequest;
 import ru.yandex.practicum.accounts.controller.dto.AccountDto;
 import ru.yandex.practicum.accounts.controller.dto.CurrencyEnum;
 import ru.yandex.practicum.accounts.controller.dto.EditPasswordRequest;
@@ -21,6 +21,7 @@ import ru.yandex.practicum.accounts.mapper.UserMapper;
 import ru.yandex.practicum.accounts.model.AccountEntity;
 import ru.yandex.practicum.accounts.model.UserEntity;
 import ru.yandex.practicum.accounts.repository.UserRepository;
+import ru.yandex.practicum.accounts.service.AccountService;
 import ru.yandex.practicum.accounts.service.UserService;
 
 import java.math.BigDecimal;
@@ -42,9 +43,9 @@ public class UserServiceImpl implements UserService {
     private static final String USER_NOT_FOUND_ERROR_MSG = "Пользователь с логином %s не найден";
 
     private final UserMapper userMapper;
-    private final AccountServiceImpl accountService;
+    private final AccountService accountService;
     private final UserRepository userRepository;
-    private final NotificationClient notificationClient;
+    private final NotificationSender notificationSender;
 
     public Mono<UserDto> createUser(UserCreateRequest request) {
         return validateRequest(request)
@@ -143,7 +144,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private Mono<Void> sendNotification(String login, String message) {
-        return notificationClient.sendNotification(new NotificationRequest(login, message));
+        notificationSender.sendNotification(new NotificationRequest(login, message));
+        return Mono.empty();
     }
 
     private Mono<UserEntity> findAndUpdateUser(String login, EditPasswordRequest request) {
@@ -177,12 +179,10 @@ public class UserServiceImpl implements UserService {
     private Mono<Void> sendAccountUpdateNotification(String login, int accountsCount) {
         String notificationMessage = String.format("Данные вашего аккаунта успешно обновлены. Изменено счетов: %d", accountsCount);
 
-        return notificationClient
-                .sendNotification(new NotificationRequest(login, notificationMessage))
-                .onErrorResume(error -> {
-                    log.error("Ошибка обновления счетов пользователя: {}", login, error);
-                    return Mono.empty();
-                });
+        notificationSender
+                .sendNotification(new NotificationRequest(login, notificationMessage));
+
+        return Mono.empty();
     }
 
     private Mono<UserEntity> findAndUpdateUserData(String login, UserDto user) {
