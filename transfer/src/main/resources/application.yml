@@ -23,6 +23,17 @@ spring:
           keycloak:
             issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/master}
 
+  kafka:
+    bootstrap-servers: ${KAFKA_URL:localhost:29092}
+    admin:
+      client-id: transfer-service
+      fail-fast: true
+    producer:
+      acks: all
+      retries: 3
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
 client:
   accounts:
     url: ${ACCOUNTS_SERVICE_URL:http://accounts:8001}

@@ -11,10 +11,10 @@ import reactor.util.function.Tuples;
 import ru.yandex.practicum.transfer.client.AccountsClient;
 import ru.yandex.practicum.transfer.client.BlockerClient;
 import ru.yandex.practicum.transfer.client.ExchangeClient;
-import ru.yandex.practicum.transfer.client.NotificationsClient;
 import ru.yandex.practicum.transfer.client.dto.AccountDto;
 import ru.yandex.practicum.transfer.client.dto.CurrencyDto;
-import ru.yandex.practicum.transfer.client.dto.NotificationRequest;
+import ru.yandex.practicum.transfer.mq.NotificationProducer;
+import ru.yandex.practicum.transfer.mq.dto.NotificationRequest;
 import ru.yandex.practicum.transfer.client.dto.OperationCheckResult;
 import ru.yandex.practicum.transfer.client.dto.OperationRequest;
 import ru.yandex.practicum.transfer.client.dto.UserDto;
@@ -36,7 +36,7 @@ public class TransferService {
     private final AccountsClient accountsClient;
     private final ExchangeClient exchangeClient;
     private final BlockerClient blockerClient;
-    private final NotificationsClient notificationsClient;
+    private final NotificationProducer notificationProducer;
 
     public Mono<Void> transfer(TransferRequest request) {
         return validateTransfer(request)
@@ -77,9 +77,9 @@ public class TransferService {
     }
 
     private Mono<Void> sendTransferNotification(String login, String message) {
-        return notificationsClient.sendNotification(new NotificationRequest(login, message))
+        return Mono.fromRunnable(() -> notificationProducer.sendNotification(new NotificationRequest(login, message)))
                 .doOnError(e -> log.error("Ошибка при отправке увндомления", e))
-                .onErrorComplete();
+                .then();
     }
 
     private AccountDto findAccountByCurrency(UserDto user, String currencyName, String errorMessage) {
