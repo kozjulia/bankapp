@@ -3,9 +3,8 @@ package ru.yandex.practicum.exchange.generator.service;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
-import ru.yandex.practicum.exchange.generator.client.ExchangeClient;
-import ru.yandex.practicum.exchange.generator.client.dto.CurrencyDto;
+import ru.yandex.practicum.exchange.generator.mq.CurrencyRateProducer;
+import ru.yandex.practicum.exchange.generator.mq.dto.CurrencyDto;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,10 +17,10 @@ public class CurrencyGeneratorService {
 
     private final Random random;
     private final List<String> currencyCodes;
-    private final ExchangeClient exchangeClient;
+    private final CurrencyRateProducer currencyRateProducer;
 
-    public CurrencyGeneratorService(ExchangeClient exchangeClient) {
-        this.exchangeClient = exchangeClient;
+    public CurrencyGeneratorService(CurrencyRateProducer currencyRateProducer) {
+        this.currencyRateProducer = currencyRateProducer;
         this.random = new Random();
         this.currencyCodes = List.of("USD", "CNY", "RUB");
     }
@@ -33,8 +32,7 @@ public class CurrencyGeneratorService {
                     .add(BigDecimal.valueOf(random.nextDouble()).multiply(BigDecimal.valueOf(2.0)));
             BigDecimal roundedRate = randomValue.setScale(2, RoundingMode.HALF_UP);
             CurrencyDto updatedCurrency = new CurrencyDto(code, getTitleForCode(code), roundedRate);
-            exchangeClient.updateCurrencyRate(code, Mono.just(updatedCurrency))
-                    .subscribe();
+            currencyRateProducer.sendCurrencyRate(updatedCurrency);
         });
     }
 

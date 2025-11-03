@@ -1,4 +1,4 @@
-package ru.yandex.practicum.exchange.generator.client.dto;
+package ru.yandex.practicum.exchange.generator.mq.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
