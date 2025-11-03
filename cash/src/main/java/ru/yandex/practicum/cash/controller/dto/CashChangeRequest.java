@@ -1,4 +1,4 @@
-package ru.yandex.practicum.cash.dto;
+package ru.yandex.practicum.cash.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

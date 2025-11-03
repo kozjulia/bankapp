@@ -44,6 +44,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.security:spring-security-oauth2-jose'
 
+    implementation 'org.springframework.kafka:spring-kafka'
+
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
@@ -72,7 +74,8 @@ jacoco {
 
 def jacocoExclusions = [
         'ru.yandex.practicum.cash.client.*',
-        'ru.yandex.practicum.cash.service.CashService'
+        'ru.yandex.practicum.cash.service.CashService',
+        'ru.yandex.practicum.cash.mq.*'
 ]
 
 jacocoTestCoverageVerification {
