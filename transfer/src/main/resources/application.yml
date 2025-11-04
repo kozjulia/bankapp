@@ -41,8 +41,6 @@ client:
     url: ${BLOCKER_SERVICE_URL:http://blocker:8002}
   exchange:
     url: ${EXCHANGE_SERVICE_URL:http://exchange:8004}
-  notifications:
-    url: ${NOTIFICATIONS_SERVICE_URL:http://notifications:8006}
 
 logging:
   level:
