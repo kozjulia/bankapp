@@ -93,7 +93,16 @@ kubectl apply -f keycloak-deployment.yaml
 kubectl delete -f keycloak-deployment.yaml
 ```
 
-7. Добавьте записи в `/etc/hosts`
+7. Установите kafka
+
+```bush
+cd ..
+kubectl apply -f kafka-deployment.yaml
+## для удаления
+kubectl delete -f kafka-deployment.yaml
+```
+
+8. Добавьте записи в `/etc/hosts`
 
 ```bash
 sudo nano /etc/hosts
@@ -106,9 +115,9 @@ sudo nano /etc/hosts
 127.0.0.1 front.test.local
 ```
 
-7. Используйте `minikube tunnel`
+9. Используйте `minikube tunnel`
 
-8. Импортируйте скоупы и клиенты для keycloak
+10. Импортируйте скоупы и клиенты для keycloak
 
 ```bush
 cd .docker/keycloak-config-loader/scripts
@@ -116,7 +125,7 @@ sh upload-scopes-to-keycloak.sh
 sh upload-clients-to-keycloak.sh
 ```
 
-9. Задеплойте сервисы с помощью helm чартов
+11. Задеплойте сервисы с помощью helm чартов
 
 ```bush
 cd .deployment
@@ -128,7 +137,7 @@ helm upgrade bankapp .
 helm uninstall bankapp
 ```
 
-10. Перейдите по ссылке `http://front.test.local`
+12. Перейдите по ссылке `http://front.test.local`
 
 -------
 

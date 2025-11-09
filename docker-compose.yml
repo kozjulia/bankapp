@@ -21,6 +21,8 @@ services:
     depends_on:
       - keycloak
       - keycloak-config-loader
+    networks:
+      - kafka-net
 
   keycloak-config-loader:
     build:
@@ -48,6 +50,8 @@ services:
       sh /app/scripts/upload-clients-to-keycloak.sh"
     depends_on:
       - keycloak
+    networks:
+      - kafka-net
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -60,6 +64,38 @@ services:
       - "8080:8080"
     command:
       - start-dev
+    networks:
+      - kafka-net
+
+  kafka:
+    container_name: kafka
+    image: apache/kafka:4.0.0
+    ports:
+      - 9092:9092     # для Kafka UI внутри Docker
+      - 29092:29092   # для доступа из локального приложения
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - kafka-net
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 8081:8080
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    networks:
+      - kafka-net
 
   front:
     container_name: front
@@ -72,6 +108,8 @@ services:
       - "8000:8000"
     depends_on:
       - keycloak-secret-loader
+    networks:
+      - kafka-net
 
   accounts-db:
     image: postgres:latest
@@ -82,6 +120,8 @@ services:
       POSTGRES_DB: accounts_db
     ports:
       - "5430:5432"
+    networks:
+      - kafka-net
 
   accounts:
     container_name: accounts
@@ -97,6 +137,8 @@ services:
     depends_on:
       - accounts-db
       - keycloak-secret-loader
+    networks:
+      - kafka-net
 
   blocker:
     container_name: blocker
@@ -109,6 +151,8 @@ services:
       - "8002:8002"
     depends_on:
       - keycloak-secret-loader
+    networks:
+      - kafka-net
 
   cash:
     container_name: cash
@@ -121,6 +165,8 @@ services:
       - "8003:8003"
     depends_on:
       - keycloak-secret-loader
+    networks:
+      - kafka-net
 
   exchange:
     container_name: exchange
@@ -133,6 +179,8 @@ services:
       - "8004:8004"
     depends_on:
       - keycloak-secret-loader
+    networks:
+      - kafka-net
 
   exchange-generator:
     container_name: exchange-generator
@@ -145,6 +193,8 @@ services:
       - "8005:8005"
     depends_on:
       - keycloak-secret-loader
+    networks:
+      - kafka-net
 
   notifications:
     container_name: notifications
@@ -157,6 +207,8 @@ services:
       - "8006:8006"
     depends_on:
       - keycloak-secret-loader
+    networks:
+      - kafka-net
 
   transfer:
     container_name: transfer
@@ -169,3 +221,9 @@ services:
       - "8007:8007"
     depends_on:
       - keycloak-secret-loader
+    networks:
+      - kafka-net
+
+networks:
+  kafka-net:
+    driver: bridge

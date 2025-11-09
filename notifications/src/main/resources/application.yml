@@ -5,11 +5,19 @@ spring:
   application:
     name: notifications
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${KEYCLOAK_ISSUE_URL:http://localhost:8080/realms/master}
+  kafka:
+    bootstrap-servers: ${KAFKA_URL:localhost:29092}
+    admin:
+      client-id: notifications
+      fail-fast: true
+    consumer:
+      group-id: notifications
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-commit: true
+      enable-auto-commit: true
+      properties:
+        spring.json.trusted.packages: '*'
 
 logging:
   level:

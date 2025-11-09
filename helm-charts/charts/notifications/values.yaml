@@ -18,18 +18,15 @@ serviceAccount:
 ingress:
   enabled: true
   className: "nginx"
-  annotations: {}
+  annotations: { }
   hosts:
     - host: notifications.test.local
       paths:
         - path: /
           pathType: Prefix
-  tls: []
+  tls: [ ]
 
-environment:
-  KEYCLOAK_ISSUE_URL: http://keycloak:8080/realms/master
-
-resources: {}
+resources: { }
 
 autoscaling:
   enabled: false

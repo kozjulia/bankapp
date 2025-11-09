@@ -6,11 +6,12 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import ru.yandex.practicum.exchange.configuration.TestSecurityConfiguration;
-import ru.yandex.practicum.exchange.dto.CurrencyDto;
+import ru.yandex.practicum.exchange.controller.dto.CurrencyDto;
 
 import java.math.BigDecimal;
 
@@ -18,6 +19,9 @@ import static org.springframework.security.test.web.reactive.server.SecurityMock
 
 @SpringBootTest
 @AutoConfigureWebTestClient
+@EmbeddedKafka(
+        topics = {"currency-rates"}
+)
 @Import(TestSecurityConfiguration.class)
 class CurrencyControllerTest {
 
@@ -46,7 +50,7 @@ class CurrencyControllerTest {
     void getCurrencyWhenCurrencyExistsThenReturnCurrencyTest() {
         webTestClient.mutateWith(getJwtMutator())
                 .get()
-                .uri("/api/currencies/usd")
+                .uri("/api/currencies/USD")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
@@ -84,7 +88,7 @@ class CurrencyControllerTest {
 
         webTestClient.mutateWith(getJwtMutator())
                 .put()
-                .uri("/api/currencies/usd")
+                .uri("/api/currencies/USD")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(updatedCurrency)
                 .exchange()
@@ -96,7 +100,7 @@ class CurrencyControllerTest {
 
         webTestClient.mutateWith(getJwtMutator())
                 .put()
-                .uri("/api/currencies/usd")
+                .uri("/api/currencies/USD")
                 .bodyValue(updatedCurrency)
                 .exchange()
                 .expectStatus().isOk()

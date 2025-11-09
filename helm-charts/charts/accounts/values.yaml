@@ -31,7 +31,7 @@ environment:
   SPRING_DATASOURCE_URL: "jdbc:postgresql://{{ .Release.Name }}-accounts-db:5432/accounts_db"
   SPRING_DATASOURCE_USER: sa
   KEYCLOAK_ISSUE_URL: http://keycloak:8080/realms/master
-  NOTIFICATIONS_SERVICE_URL: http://{{ .Release.Name }}-notifications:8006
+  KAFKA_URL: kafka.kafka.svc.cluster.local:9092
   CLIENT_SECRET: PAsZ470oShhYzY9qlVy35yty0tcWZhp7
 
 resources: { }

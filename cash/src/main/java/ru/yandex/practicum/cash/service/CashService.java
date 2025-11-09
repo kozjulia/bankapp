@@ -8,12 +8,12 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 import ru.yandex.practicum.cash.client.AccountsClient;
 import ru.yandex.practicum.cash.client.BlockerClient;
-import ru.yandex.practicum.cash.client.NotificationsClient;
 import ru.yandex.practicum.cash.client.dto.AccountDto;
-import ru.yandex.practicum.cash.client.dto.NotificationRequest;
+import ru.yandex.practicum.cash.mq.NotificationProducer;
+import ru.yandex.practicum.cash.mq.dto.NotificationRequest;
 import ru.yandex.practicum.cash.client.dto.OperationRequest;
 import ru.yandex.practicum.cash.client.dto.UserDto;
-import ru.yandex.practicum.cash.dto.CashChangeRequest;
+import ru.yandex.practicum.cash.controller.dto.CashChangeRequest;
 
 import java.math.BigDecimal;
 
@@ -27,9 +27,9 @@ public class CashService {
     private static final String ERROR_ACCOUNT_NOT_FOUND = "Счет с указанной валютой не найден";
     private static final String ERROR_INSUFFICIENT_FUNDS = "На счету недостаточно средств";
 
-    private final AccountsClient accountsClient;
     private final BlockerClient blockerClient;
-    private final NotificationsClient notificationsClient;
+    private final AccountsClient accountsClient;
+    private final NotificationProducer notificationProducer;
 
     public Mono<Void> processAccountTransaction(String login, CashChangeRequest request) {
         return validateRequest(request)
@@ -55,15 +55,15 @@ public class CashService {
     }
 
     private Mono<Void> sendSuccessNotification(String login, String message) {
-        return notificationsClient.sendNotification(new NotificationRequest(login, message))
+        return Mono.fromRunnable(() -> notificationProducer.sendNotification(new NotificationRequest(login, message)))
                 .doOnError(e -> log.error("Ошибка при отправке успешного уведомления", e))
                 .then();
     }
 
     private Mono<Void> sendErrorNotification(String login, String message) {
-        return notificationsClient.sendNotification(new NotificationRequest(login, message))
+        return Mono.fromRunnable(() -> notificationProducer.sendNotification(new NotificationRequest(login, message)))
                 .doOnError(e -> log.error("Ошибка при отправке неуспешного уведомления", e))
-                .onErrorComplete();
+                .then();
     }
 
     private Mono<CashChangeRequest> validateRequest(CashChangeRequest request) {

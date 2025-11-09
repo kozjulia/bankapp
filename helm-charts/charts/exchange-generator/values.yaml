@@ -18,19 +18,18 @@ serviceAccount:
 ingress:
   enabled: true
   className: "nginx"
-  annotations: {}
+  annotations: { }
   hosts:
     - host: exchange-generator.test.local
       paths:
         - path: /
           pathType: Prefix
-  tls: []
+  tls: [ ]
 
 environment:
-  KEYCLOAK_ISSUE_URL: http://keycloak:8080/realms/master
-  EXCHANGE_SERVICE_URL: http://{{ .Release.Name }}-exchange:8004
+  KAFKA_URL: kafka.kafka.svc.cluster.local:9092
 
-resources: {}
+resources: { }
 
 autoscaling:
   enabled: false
