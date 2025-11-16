@@ -46,7 +46,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
-    implementation 'org.postgresql:postgresql'
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
 
     implementation 'org.apache.commons:commons-lang3:3.19.0'
     annotationProcessor 'org.projectlombok:lombok'

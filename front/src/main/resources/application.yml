@@ -36,3 +36,7 @@ client:
     url: ${EXCHANGE_SERVICE_URL:http://exchange:8004}
   transfer:
     url: ${TRANSFER_SERVICE_URL:http://transfer:8007}
+
+management:
+  endpoints.web.exposure.include: '*'
+  endpoint.health.show-details: always

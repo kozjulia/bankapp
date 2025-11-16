@@ -5,5 +5,5 @@ metadata:
   labels:
     { { - include "exchange-generator.labels" . | nindent 4 } }
 data:
-  management.zipkin.tracing.endpoint: { { tpl .Values.configmap.data.ZIPKIN_TRACING_ENDPOINT . | quote } }
-  management.tracing.sampling.probability: { { .Values.configmap.data.ZIPKIN_SAMPLING_PROBABILITY | quote } }
+  management.zipkin.tracing.endpoint: { { tpl .Values.environment.ZIPKIN_TRACING_ENDPOINT . | quote } }
+  management.tracing.sampling.probability: { { .Values.environment.ZIPKIN_SAMPLING_PROBABILITY | quote } }

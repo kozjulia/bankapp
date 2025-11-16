@@ -18,13 +18,13 @@ serviceAccount:
 ingress:
   enabled: true
   className: "nginx"
-  annotations: {}
+  annotations: { }
   hosts:
     - host: front.test.local
       paths:
         - path: /
           pathType: Prefix
-  tls: []
+  tls: [ ]
 
 environment:
   KEYCLOAK_ISSUE_URL: http://keycloak:8080/realms/master
@@ -32,8 +32,10 @@ environment:
   CASH_SERVICE_URL: http://{{ .Release.Name }}-cash:8003
   EXCHANGE_SERVICE_URL: http://{{ .Release.Name }}-exchange:8004
   TRANSFER_SERVICE_URL: http://{{ .Release.Name }}-transfer:8007
+  ZIPKIN_TRACING_ENDPOINT: "http://zipkin.{{ .Release.Namespace }}.svc.cluster.local:9411/api/v2/spans"
+  ZIPKIN_SAMPLING_PROBABILITY: 1
 
-resources: {}
+resources: { }
 
 autoscaling:
   enabled: false

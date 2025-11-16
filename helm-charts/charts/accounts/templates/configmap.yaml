@@ -9,5 +9,5 @@ data:
   SPRING_DATASOURCE_URL: { { tpl .Values.environment.SPRING_DATASOURCE_URL . | quote } }
   SPRING_DATASOURCE_USER: { { .Values.environment.SPRING_DATASOURCE_USER | quote } }
   # SPRING_DATASOURCE_PASSWORD would typically come from a secret, not this ConfigMap.
-  management.zipkin.tracing.endpoint: { { tpl .Values.configmap.data.ZIPKIN_TRACING_ENDPOINT . | quote } }
-  management.tracing.sampling.probability: { { .Values.configmap.data.ZIPKIN_SAMPLING_PROBABILITY | quote } }
+  management.zipkin.tracing.endpoint: { { tpl .Values.environment.ZIPKIN_TRACING_ENDPOINT . | quote } }
+  management.tracing.sampling.probability: { { .Values.environment.ZIPKIN_SAMPLING_PROBABILITY | quote } }
