@@ -1,0 +1,9 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: { { include "blocker.fullname" . } }
+  labels:
+    { { - include "blocker.labels" . | nindent 4 } }
+data:
+  management.zipkin.tracing.endpoint: { { tpl .Values.configmap.data.ZIPKIN_TRACING_ENDPOINT . | quote } }
+  management.tracing.sampling.probability: { { .Values.configmap.data.ZIPKIN_SAMPLING_PROBABILITY | quote } }
