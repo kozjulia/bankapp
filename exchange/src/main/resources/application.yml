@@ -28,3 +28,7 @@ spring:
 logging:
   level:
     org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping: TRACE
+
+management:
+  endpoints.web.exposure.include: '*'
+  endpoint.health.show-details: always
