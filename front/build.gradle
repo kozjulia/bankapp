@@ -48,6 +48,7 @@ dependencies {
 
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
     implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
 
     implementation 'org.apache.commons:commons-lang3:3.19.0'
     annotationProcessor 'org.projectlombok:lombok'

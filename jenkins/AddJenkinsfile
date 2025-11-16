@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_REGISTRY = credentials('DOCKER_REGISTRY')
+        GITHUB_USERNAME = credentials('GITHUB_USERNAME')
+        KUBECONFIG = '/root/.kube/config'
+    }
+
+    stages {
+        stage('Helm Deploy to Kafka Namespace') {
+            steps {
+                sh """
+                kubectl apply -f kafka-deployment.yaml
+                """
+            }
+        }
+
+        stage('Deploy Prometheus') {
+            steps {
+                sh """
+                helm upgrade --install prometheus ./prometheus \
+                  --namespace monitoring --create-namespace
+                """
+            }
+        }
+
+        stage('Deploy Grafana') {
+            steps {
+                sh """
+                helm upgrade --install grafana ./grafana \
+                  --namespace monitoring --create-namespace
+                """
+            }
+        }
+    }
+}

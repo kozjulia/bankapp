@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bankapp-dashboard
+  labels:
+    grafana_dashboard: "1"
+data:
+  accounts-dashboard.json: |
+  { { .Files.Get "dashboards/dashboard.json" | indent 4 } }
