@@ -1,11 +1,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "accounts.fullname" . }}
+  name: { { include "accounts.fullname" . } }
   labels:
-    {{- include "accounts.labels" . | nindent 4 }}
+    { { - include "accounts.labels" . | nindent 4 } }
 data:
-  SPRING_DATASOURCE_R2DBC_URL: {{ tpl .Values.environment.SPRING_DATASOURCE_R2DBC_URL . | quote }}
-  SPRING_DATASOURCE_URL: {{ tpl .Values.environment.SPRING_DATASOURCE_URL . | quote }}
-  SPRING_DATASOURCE_USER: {{ .Values.environment.SPRING_DATASOURCE_USER | quote }}
+  SPRING_DATASOURCE_R2DBC_URL: { { tpl .Values.environment.SPRING_DATASOURCE_R2DBC_URL . | quote } }
+  SPRING_DATASOURCE_URL: { { tpl .Values.environment.SPRING_DATASOURCE_URL . | quote } }
+  SPRING_DATASOURCE_USER: { { .Values.environment.SPRING_DATASOURCE_USER | quote } }
   # SPRING_DATASOURCE_PASSWORD would typically come from a secret, not this ConfigMap.
+  management.zipkin.tracing.endpoint: { { tpl .Values.configmap.data.ZIPKIN_TRACING_ENDPOINT . | quote } }
+  management.tracing.sampling.probability: { { .Values.configmap.data.ZIPKIN_SAMPLING_PROBABILITY | quote } }

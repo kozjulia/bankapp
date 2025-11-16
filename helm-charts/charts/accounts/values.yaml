@@ -33,6 +33,8 @@ environment:
   KEYCLOAK_ISSUE_URL: http://keycloak:8080/realms/master
   KAFKA_URL: kafka.kafka.svc.cluster.local:9092
   CLIENT_SECRET: PAsZ470oShhYzY9qlVy35yty0tcWZhp7
+  ZIPKIN_TRACING_ENDPOINT: "http://zipkin.{{ .Release.Namespace }}.svc.cluster.local:9411/api/v2/spans"
+  ZIPKIN_SAMPLING_PROBABILITY: 1
 
 resources: { }
 

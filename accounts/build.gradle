@@ -53,6 +53,8 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql' // JDBC драйвер для Flyway
 
     implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
 
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
