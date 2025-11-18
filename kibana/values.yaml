@@ -1,0 +1,58 @@
+kibana:
+  replicaCount: 1
+
+  elasticsearchHosts: "http://elasticsearch-master:9200"
+
+  service:
+    type: NodePort
+    nodePort: 32000
+
+  ingress:
+    enabled: true
+    className: "nginx"
+    hosts:
+      - host: kibana.example.com
+        paths:
+          - path: /
+            pathType: Prefix
+
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    failureThreshold: 3
+    timeoutSeconds: 5
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 512Mi
+
+  env:
+    - name: ELASTICSEARCH_USERNAME
+      value: "kibana_system"
+    - name: ELASTICSEARCH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: elastic-credentials
+          key: kibana_password
+
+secret:
+  create: true
+  name: elastic-credentials
+  kibanaUsername: kibana_system
+  kibanaPassword: kibana_pass

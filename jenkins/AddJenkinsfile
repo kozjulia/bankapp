@@ -33,5 +33,20 @@ pipeline {
                 """
             }
         }
+
+         stage('Deploy ELK Stack') {
+             steps {
+                 sh """
+                 helm upgrade --install elasticsearch ./elasticsearch \
+                   --namespace elk --create-namespace
+
+                 helm upgrade --install logstash ./logstash \
+                   --namespace elk --create-namespace
+
+                 helm upgrade --install kibana ./kibana \
+                   --namespace elk --create-namespace
+                 """
+             }
+         }
     }
 }
