@@ -32,6 +32,8 @@ environment:
   BLOCKER_SERVICE_URL: http://{{ .Release.Name }}-blocker:8002
   EXCHANGE_SERVICE_URL: http://{{ .Release.Name }}-exchange:8004
   KAFKA_URL: kafka.kafka.svc.cluster.local:9092
+  ZIPKIN_TRACING_ENDPOINT: "http://zipkin.{{ .Release.Namespace }}.svc.cluster.local:9411/api/v2/spans"
+  ZIPKIN_SAMPLING_PROBABILITY: 1
 
 resources: { }
 

@@ -1,0 +1,63 @@
+logstash:
+  replicas: 1
+
+  httpPort: 9600
+
+  service:
+    type: ClusterIP
+    ports:
+      - name: beats
+        port: 5044
+        targetPort: 5044
+
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 10
+    successThreshold: 1
+
+  logstashConfig:
+    logstash.yml: |
+      http.host: "0.0.0.0"
+      http.port: 9600
+
+  logstashPipeline:
+    logstash.conf: |
+      input {
+        kafka {
+          bootstrap_servers => "kafka.kafka.svc.cluster.local:9092"
+          topics => ["application-logs"]
+          group_id => "bankapp-logstash-group"
+          codec => plain { charset => "UTF-8" }
+        }
+      }
+
+      filter {
+        grok {
+          match => {
+            "message" => [
+              "%{TIMESTAMP_ISO8601:timestamp} \[%{DATA:thread}\] \[%{DATA:traceId}\] \[%{DATA:spanId}\] %{LOGLEVEL:level}\s+%{DATA:logger} - %{GREEDYDATA:log_message}"
+            ]
+          }
+        }
+        mutate {
+          remove_field => [ "event", "message", "@version" ]
+        }
+      }
+
+      output {
+        stdout { codec => rubydebug }
+        elasticsearch {
+          hosts => ["http://elasticsearch-master:9200"]
+          index => "bankapp-logs-%{+YYYY.MM.dd}"
+        }
+      }
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi

@@ -63,3 +63,7 @@ logging:
     org.springframework:
       r2dbc: DEBUG
       web.reactive.result.method.annotation.RequestMappingHandlerMapping: TRACE
+
+management:
+  endpoints.web.exposure.include: '*'
+  endpoint.health.show-details: always

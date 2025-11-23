@@ -1,0 +1,373 @@
+{
+  "attributes": {
+    "allowHidden": false,
+    "fieldAttrs": "{}",
+    "fieldFormatMap": "{}",
+    "fields": "[]",
+    "name": "App Logs Data View",
+    "runtimeFieldMap": "{}",
+    "sourceFilters": "[]",
+    "timeFieldName": "@timestamp",
+    "title": "application-logs-*"
+  },
+  "coreMigrationVersion": "8.8.0",
+  "created_at": "2024-06-06T00:00:00.000Z",
+  "id": "app-logs-data-view",
+  "managed": false,
+  "references": [],
+  "type": "index-pattern",
+  "typeMigrationVersion": "8.0.0",
+  "updated_at": "2024-06-06T00:00:00.000Z",
+  "version": "WzEsMV0="
+}
+{
+  "attributes": {
+    "description": "",
+    "state": {
+      "adHocDataViews": {},
+      "datasourceStates": {
+        "formBased": {
+          "currentIndexPatternId": "app-logs-data-view",
+          "layers": {
+            "layer-activity": {
+              "columnOrder": [
+                "timestamp-col",
+                "count-col"
+              ],
+              "columns": {
+                "timestamp-col": {
+                  "dataType": "date",
+                  "isBucketed": true,
+                  "label": "@timestamp",
+                  "operationType": "date_histogram",
+                  "params": {
+                    "dropPartials": false,
+                    "includeEmptyRows": true,
+                    "interval": "auto"
+                  },
+                  "scale": "interval",
+                  "sourceField": "@timestamp"
+                },
+                "count-col": {
+                  "dataType": "number",
+                  "isBucketed": false,
+                  "label": "Count of records",
+                  "operationType": "count",
+                  "params": {
+                    "emptyAsNull": true
+                  },
+                  "scale": "ratio",
+                  "sourceField": "___records___"
+                }
+              },
+              "ignoreGlobalFilters": false,
+              "incompleteColumns": {},
+              "indexPatternId": "app-logs-data-view",
+              "sampling": 1
+            }
+          }
+        },
+        "indexpattern": {
+          "currentIndexPatternId": "app-logs-data-view",
+          "layers": {}
+        },
+        "textBased": {
+          "indexPatternRefs": [
+            {
+              "id": "app-logs-data-view",
+              "timeField": "@timestamp",
+              "title": "application-logs-*"
+            }
+          ],
+          "layers": {}
+        }
+      },
+      "filters": [],
+      "internalReferences": [],
+      "query": {
+        "language": "kuery",
+        "query": ""
+      },
+      "visualization": {
+        "fittingFunction": "Linear",
+        "layers": [
+          {
+            "accessors": [
+              "count-col"
+            ],
+            "layerId": "layer-activity",
+            "layerType": "data",
+            "position": "top",
+            "seriesType": "line",
+            "showGridlines": false,
+            "xAccessor": "timestamp-col"
+          }
+        ],
+        "legend": {
+          "isVisible": true,
+          "position": "right"
+        },
+        "preferredSeriesType": "line",
+        "title": "Активность по времени",
+        "valueLabels": "hide"
+      }
+    },
+    "title": "Активность по времени",
+    "visualizationType": "lnsXY"
+  },
+  "coreMigrationVersion": "8.8.0",
+  "created_at": "2024-06-06T00:00:00.000Z",
+  "id": "activity-line-chart",
+  "managed": false,
+  "references": [
+    {
+      "id": "app-logs-data-view",
+      "name": "indexpattern-datasource-layer-layer-activity",
+      "type": "index-pattern"
+    }
+  ],
+  "type": "lens",
+  "typeMigrationVersion": "8.9.0",
+  "updated_at": "2024-06-06T00:00:00.000Z",
+  "version": "WzIsMV0="
+}
+{
+  "attributes": {
+    "description": "",
+    "state": {
+      "adHocDataViews": {},
+      "datasourceStates": {
+        "formBased": {
+          "layers": {
+            "layer-level": {
+              "columnOrder": [
+                "loglevel-col",
+                "count-col"
+              ],
+              "columns": {
+                "loglevel-col": {
+                  "dataType": "string",
+                  "isBucketed": true,
+                  "label": "log-level",
+                  "operationType": "terms",
+                  "params": {
+                    "exclude": [],
+                    "excludeIsRegex": false,
+                    "include": [],
+                    "includeIsRegex": false,
+                    "missingBucket": false,
+                    "orderBy": {
+                      "columnId": "count-col",
+                      "type": "column"
+                    },
+                    "orderDirection": "desc",
+                    "otherBucket": true,
+                    "parentFormat": {
+                      "id": "terms"
+                    },
+                    "size": 5
+                  },
+                  "scale": "ordinal",
+                  "sourceField": "log-level.keyword"
+                },
+                "count-col": {
+                  "dataType": "number",
+                  "isBucketed": false,
+                  "label": "Count of records",
+                  "operationType": "count",
+                  "params": {
+                    "emptyAsNull": true
+                  },
+                  "scale": "ratio",
+                  "sourceField": "___records___"
+                }
+              },
+              "incompleteColumns": {},
+              "sampling": 1
+            }
+          }
+        },
+        "indexpattern": {
+          "layers": {}
+        },
+        "textBased": {
+          "layers": {}
+        }
+      },
+      "filters": [],
+      "internalReferences": [],
+      "query": {
+        "language": "kuery",
+        "query": ""
+      },
+      "visualization": {
+        "layers": [
+          {
+            "categoryDisplay": "default",
+            "layerId": "layer-level",
+            "layerType": "data",
+            "legendDisplay": "default",
+            "metrics": [
+              "count-col"
+            ],
+            "nestedLegend": false,
+            "numberDisplay": "percent",
+            "primaryGroups": [
+              "loglevel-col"
+            ]
+          }
+        ],
+        "shape": "donut"
+      }
+    },
+    "title": "Логи по уровням",
+    "visualizationType": "lnsPie"
+  },
+  "coreMigrationVersion": "8.8.0",
+  "created_at": "2024-06-06T00:00:00.000Z",
+  "id": "loglevel-pie-chart",
+  "managed": false,
+  "references": [
+    {
+      "id": "app-logs-data-view",
+      "name": "indexpattern-datasource-layer-layer-level",
+      "type": "index-pattern"
+    }
+  ],
+  "type": "lens",
+  "typeMigrationVersion": "8.9.0",
+  "updated_at": "2024-06-06T00:00:00.000Z",
+  "version": "WzMsMV0="
+}
+{
+  "attributes": {
+    "description": "",
+    "state": {
+      "adHocDataViews": {},
+      "datasourceStates": {
+        "formBased": {
+          "layers": {
+            "layer-table": {
+              "columnOrder": [
+                "timestamp-col",
+                "loglevel-col",
+                "message-col"
+              ],
+              "columns": {
+                "timestamp-col": {
+                  "dataType": "date",
+                  "isBucketed": false,
+                  "label": "@timestamp",
+                  "operationType": "date",
+                  "sourceField": "@timestamp"
+                },
+                "loglevel-col": {
+                  "dataType": "string",
+                  "isBucketed": false,
+                  "label": "log-level",
+                  "operationType": "terms",
+                  "sourceField": "log-level.keyword"
+                },
+                "message-col": {
+                  "dataType": "string",
+                  "isBucketed": false,
+                  "label": "message",
+                  "operationType": "terms",
+                  "sourceField": "message.keyword"
+                }
+              },
+              "incompleteColumns": {},
+              "sampling": 1
+            }
+          }
+        },
+        "indexpattern": {
+          "layers": {}
+        },
+        "textBased": {
+          "layers": {}
+        }
+      },
+      "filters": [],
+      "internalReferences": [],
+      "query": {
+        "language": "kuery",
+        "query": ""
+      },
+      "visualization": {
+        "columns": [
+          {
+            "columnId": "timestamp-col",
+            "isMetric": false,
+            "isTransposed": false
+          },
+          {
+            "columnId": "loglevel-col",
+            "isTransposed": false
+          },
+          {
+            "columnId": "message-col",
+            "isTransposed": false
+          }
+        ],
+        "layerId": "layer-table",
+        "layerType": "data"
+      }
+    },
+    "title": "Последние логи (таблица)",
+    "visualizationType": "lnsDatatable"
+  },
+  "coreMigrationVersion": "8.8.0",
+  "created_at": "2024-06-06T00:00:00.000Z",
+  "id": "logs-table",
+  "managed": false,
+  "references": [
+    {
+      "id": "app-logs-data-view",
+      "name": "indexpattern-datasource-layer-layer-table",
+      "type": "index-pattern"
+    }
+  ],
+  "type": "lens",
+  "typeMigrationVersion": "8.9.0",
+  "updated_at": "2024-06-06T00:00:00.000Z",
+  "version": "WzQsMV0="
+}
+{
+  "attributes": {
+    "description": "",
+    "kibanaSavedObjectMeta": {
+      "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+    },
+    "optionsJSON": "{\"useMargins\":true,\"syncColors\":false,\"syncCursor\":true,\"syncTooltips\":false,\"hidePanelTitles\":false}",
+    "panelsJSON": "[{\"type\":\"lens\",\"gridData\":{\"x\":0,\"y\":0,\"w\":24,\"h\":15,\"i\":\"activity-line\"},\"panelIndex\":\"activity-line\",\"embeddableConfig\":{\"enhancements\":{}},\"panelRefName\":\"panel_activity-line\"},{\"type\":\"lens\",\"gridData\":{\"x\":24,\"y\":0,\"w\":24,\"h\":15,\"i\":\"loglevel-pie\"},\"panelIndex\":\"loglevel-pie\",\"embeddableConfig\":{\"enhancements\":{}},\"panelRefName\":\"panel_loglevel-pie\"},{\"type\":\"lens\",\"gridData\":{\"x\":0,\"y\":15,\"w\":48,\"h\":15,\"i\":\"logs-table\"},\"panelIndex\":\"logs-table\",\"embeddableConfig\":{\"enhancements\":{}},\"panelRefName\":\"panel_logs-table\"}]",
+    "timeRestore": false,
+    "title": "Дашборд логов приложения",
+    "version": 1
+  },
+  "coreMigrationVersion": "8.8.0",
+  "created_at": "2024-06-06T00:00:00.000Z",
+  "id": "app-logs-dashboard",
+  "managed": false,
+  "references": [
+    {
+      "id": "activity-line-chart",
+      "name": "panel_activity-line",
+      "type": "lens"
+    },
+    {
+      "id": "loglevel-pie-chart",
+      "name": "panel_loglevel-pie",
+      "type": "lens"
+    },
+    {
+      "id": "logs-table",
+      "name": "panel_logs-table",
+      "type": "lens"
+    }
+  ],
+  "type": "dashboard",
+  "typeMigrationVersion": "8.9.0",
+  "updated_at": "2024-06-06T00:00:00.000Z",
+  "version": "WzUsMV0="
+}

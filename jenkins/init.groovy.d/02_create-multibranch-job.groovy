@@ -6,10 +6,10 @@ import org.jenkinsci.plugins.workflow.multibranch.*
 def env = System.getenv()
 def instance = Jenkins.get()
 
-def jobName       = "BankappHelmApp"
-def githubRepo    = env['GITHUB_REPOSITORY']
+def jobName = "BankappHelmApp"
+def githubRepo = env['GITHUB_REPOSITORY']
 def credentialsId = "github-creds"
-def scriptPath    = "jenkins/Jenkinsfile"
+def scriptPath = "jenkins/Jenkinsfile"
 
 println "--> Запуск create-multibranch-job.groovy"
 
@@ -33,7 +33,7 @@ if (parts.length != 2) {
     return
 }
 def owner = parts[0]
-def repo  = parts[1]
+def repo = parts[1]
 
 println "--> GITHUB_OWNER = ${owner}"
 println "--> GITHUB_REPO = ${repo}"
@@ -62,3 +62,9 @@ mbp.save()
 mbp.scheduleBuild2(0)
 
 println "--> Multibranch job '${jobName}' создан и запущен на '${githubRepo}'"
+
+// Создаём первый Multibranch Job для основного Jenkinsfile
+createMultibranchJob("BankappHelmApp", "jenkins/Jenkinsfile")
+
+// Создаём второй Multibranch Job для второго Jenkinsfile
+createMultibranchJob("AddHelmApp", "jenkins/AddJenkinsfile")

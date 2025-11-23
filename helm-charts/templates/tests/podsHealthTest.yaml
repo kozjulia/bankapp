@@ -40,7 +40,7 @@ spec:
     - name: notifications-test
       image: busybox
       command: [ 'wget' ]
-      args: [ '{{ .Release.Name }}-notifications:8007/actuator/health' ]
+      args: [ '{{ .Release.Name }}-notifications:8006/actuator/health' ]
 
     - name: transfer-test
       image: busybox

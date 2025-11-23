@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%X{traceId:-}] [%X{spanId:-}] %-5level
+            %logger{36} - %msg%n
+        </Property>
+        <Property name="KAFKA_BOOTSTRAP_SERVERS">${env:KAFKA_URL:-localhost:29092}</Property>
+        <Property name="KAFKA_TOPIC">${env:KAFKA_TOPIC:-application-logs}</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <!-- Kafka Appender -->
+        <Kafka name="Kafka" topic="${KAFKA_TOPIC}">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Property name="bootstrap.servers" value="${KAFKA_BOOTSTRAP_SERVERS}"/>
+            <Property name="key.serializer" value="org.apache.kafka.common.serialization.StringSerializer"/>
+            <Property name="value.serializer" value="org.apache.kafka.common.serialization.StringSerializer"/>
+        </Kafka>
+    </Appenders>
+
+    <Loggers>
+        <!-- Application Loggers -->
+        <Logger name="ru.yandex.practicum.exchange.generator" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Kafka"/>
+        </Logger>
+
+        <!-- Framework Loggers -->
+        <Logger name="org.springframework" level="warn" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Kafka"/>
+        </Logger>
+
+        <Logger name="org.apache.kafka" level="warn" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Kafka"/>
+        </Logger>
+
+        <!-- Root Logger -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Kafka"/>
+        </Root>
+    </Loggers>
+</Configuration> 

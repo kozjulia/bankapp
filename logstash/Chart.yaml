@@ -1,0 +1,7 @@
+apiVersion: v2
+name: logstash
+version: 0.1.0
+dependencies:
+  - name: logstash
+    version: 8.5.1
+    repository: https://helm.elastic.co

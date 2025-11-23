@@ -1,0 +1,7 @@
+kube-prometheus-stack:
+  fullnameOverride: prometheus
+  prometheus:
+    prometheusSpec:
+      retention: "10d"
+  grafana:
+    enabled: false  # отключаем встроенную Grafana, так как она будет отдельно

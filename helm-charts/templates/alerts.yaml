@@ -1,0 +1,29 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: { { .Release.Name } }-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus        # Обязательно, чтобы Prometheus подхватил
+    role: alert-rules
+spec:
+  groups:
+    - name: { { .Chart.Name } }-rules
+      rules:
+          - alert: HighErrorRate
+            expr: rate(http_server_errors_total[1m]) > 0.05
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High error rate on {{`{{ $labels.instance }}`}}"
+              description: "More than 5% error responses on {{`{{ $labels.job }}`}} over the last minute."
+
+              - alert: ServiceDown
+                expr: up{job="{{ .Chart.Name }}"} == 0
+                for: 1m
+                labels:
+                  severity: critical
+                annotations:
+                  summary: "{{ .Chart.Name }} is down"
+                  description: "No targets are reporting as 'up' for {{ .Chart.Name }} for more than 1 minute."

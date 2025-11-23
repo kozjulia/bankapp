@@ -1,0 +1,20 @@
+grafana:
+  adminPassword: "admin"
+  service:
+    type: LoadBalancer
+  persistence:
+    enabled: true
+    size: 1Gi
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          url: http://prometheus-prometheus.monitoring.svc:9090
+          access: proxy
+          isDefault: true

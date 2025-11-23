@@ -1,0 +1,28 @@
+elasticsearch:
+  replicas: 1
+
+  minimumMasterNodes: 1
+
+  volumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    resources:
+      requests:
+        storage: 5Gi
+
+  resources:
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+    limits:
+      cpu: "2000m"
+      memory: "4Gi"
+
+  esConfig:
+    elasticsearch.yml: |
+      xpack.security.enabled: false
+      xpack.ml.enabled: false
+      node.store.allow_mmap: false
+
+  service:
+    type: ClusterIP
+    port: 9200
